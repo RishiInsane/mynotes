@@ -16,6 +16,10 @@ void main()
           primarySwatch: Colors.blue,
         ),
       home: const HomePage(),
+      routes: {
+        '/login/':(context) => const LoginView(),
+        '/register/':(context) => const RegisterView(),
+      },
     ),
   );
 }
@@ -30,28 +34,59 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     //I started here//
-    return Scaffold(
-      appBar: AppBar(title: const Text('Home'),),//AppBar
-      body: FutureBuilder(
+    return FutureBuilder(
         future: Firebase.initializeApp(
           options: DefaultFirebaseOptions.currentPlatform,
         ),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
-            case ConnectionState.done:
-            final user = FirebaseAuth.instance.currentUser;
-            //final emailVerified = user?.emailVerified ?? false; //direct boolean comparison for verified-or-not could have been a null comparison therefore we first get it checked and then use it.
-            if(user?.emailVerified ?? false){
-              print('you are a verified user');
-            }else{
-              print('you need to verify your email');
-            }
-              return const Text('Done');
+            case ConnectionState.done: // initialization complete
+            // final user = FirebaseAuth.instance.currentUser;//to get user
+            // //final emailVerified = user?.emailVerified ?? false; //direct boolean comparison for verified-or-not could have been a null comparison therefore we first get it checked and then use it.
+            // if(user?.emailVerified ?? false){
+            //   return const Text('Done');
+            // }else{
+            //   return const VerifyEmailView();
+
+            //   //pushing a widget on the screen(anonymous route)
+            //  /*Navigator.of(context).push(  //creating a navigator of the context and the pushing a widget so we create a widget MaterialPageRoute and then push it
+            //   MaterialPageRoute(
+            //     builder: (context) => const VerifyEmailView()
+            //     )
+            //     );//pushing complete
+            //     */
+
+            // }
+            return const LoginView();
             default:
-              return const Text('Loading...');
+              return const CircularProgressIndicator();
           }
         },
-      ),
+      );
+  }
+}
+class VerifyEmailView extends StatefulWidget {
+  const VerifyEmailView({super.key});
+
+  @override
+  State<VerifyEmailView> createState() => _VerifyEmailViewState();
+}
+
+class _VerifyEmailViewState extends State<VerifyEmailView> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Verify Email'),),
+      body: Column(children: [
+        const Text('Please verify your email'),
+        TextButton(
+          onPressed: ()async {
+            final user = FirebaseAuth.instance.currentUser;
+            await user?.sendEmailVerification();
+          },
+          child: const Text('Send email verification')
+          ,)
+      ],),
     );
   }
 }
