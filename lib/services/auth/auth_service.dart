@@ -1,11 +1,13 @@
+import 'package:notes_app/services/auth/firebase_auth_provider.dart';
 import 'package:notes_app/services/auth_user.dart';
 import 'package:notes_app/services/auth/auth_provider.dart';
 
-//The purpose of this class is likely to provide a layer of abstraction or additional functionality on top of the base authentication provider.
+//The purpose of this class is likely to provide a layer of abstraction or additional functionality
+// on top of the base authentication provider.
 class AuthService implements AuthProvider {
   final AuthProvider provider;
-
   const AuthService(this.provider);
+  factory AuthService.firebase() => AuthService(FirebaseAuthProvider());
 
   @override
   Future<AuthUser> createUser({
@@ -35,4 +37,7 @@ class AuthService implements AuthProvider {
 
   @override
   Future<void> sendEmailVerification() => provider.sendEmailVerification();
+
+  @override
+  Future<void> initialize() => provider.initialize();
 }
