@@ -1,5 +1,5 @@
 import 'package:notes_app/services/auth/firebase_auth_provider.dart';
-import 'package:notes_app/services/auth_user.dart';
+import 'package:notes_app/services/auth/auth_user.dart';
 import 'package:notes_app/services/auth/auth_provider.dart';
 
 //The purpose of this class is likely to provide a layer of abstraction or additional functionality
