@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:notes_app/utilities/dialogs/generic_dialog.dart';
 
